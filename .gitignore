@@ -1,0 +1,7 @@
+10_atcoder/ABC/
+cotire/
+CMakeFiles/
+10_atcoder/Contest/
+cmake-build-debug/
+*.out
+.idea/
