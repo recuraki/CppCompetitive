@@ -1,0 +1,10 @@
+[codestyle]
+indent_type = 'space'
+indent_width = 4
+workspace_dir = '/mnt/c/Users/kanai/Dropbox/git/CppCompetitive/10_atcoder/ABC'
+lang = 'cpp'
+template_file='/mnt/c/Users/kanai/Dropbox/git/CppCompetitive/templ_atcoder.cpp'
+[etc]
+download_without_login=false
+parallel_download=false
+save_no_session_cache=false
