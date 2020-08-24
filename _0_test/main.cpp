@@ -1,43 +1,28 @@
 #include <bits/stdc++.h>
-#include <unordered_map>
 #define ALL(x) (x).begin(), (x).end()
 #define FOR(i, begin, end) for(int i=(begin),i##_end_=(end);i<i##_end_;i++)
 #define IFOR(i, begin, end) for(int i=(end)-1,i##_begin_=(begin);i>=i##_begin_;i--)
 #define REP(i, n) FOR(i,0,n)
 #define IREP(i, n) IFOR(i,0,n)
-using namespace std;
 
-int dat[10000];
+
+//////////////////////////////////////
+#include <iostream>
 using namespace std;
-int sum;
+#define dp(arg) do { cout << #arg << ":"; dprint(arg); } while(0)
+
+template <typename T> void dprint(T arg) { cout << arg << "\n"; }
+template <typename T> void dprint(const vector<T>& arg) { for_each(begin(arg), end(arg), [](T value){ cout << value << " "; }   ); cout << "\n";  }
+template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin(arg), end(arg), [=](vector<T> arg2){ dprint(arg2); cout << "\n";} );  }
+
+// #define dprint(arg) ;
+//////////////////////////////////////
+
+#define ll long long
+
+using namespace std;
 int main() {
-    int q;
-    unordered_map<int, char> used;
-
-    cin >> q;
-    REP(qq, q){
-        used.clear();
-
-        sum = 0;
-        int n;
-        cin >> n;
-        REP(j, n){
-            cin >> dat[j];
-        }
-
-        REP(i, n){
-            sum = dat[i];
-            FOR(j, i+1, n){
-                sum += dat[j];
-                used[sum] = 0x00;
-            }
-        }
-        int res = 0;
-        REP(i, n){
-            if ( used.find(dat[i]) != used.end() ) {
-                res += 1;
-            }
-        }
-        cout << res << "\n";
-    }
+    ll a,b;
+    cin >> a >> b;
+    cout << (a*b) / (a+b) << "\n";
 }

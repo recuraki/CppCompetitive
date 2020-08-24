@@ -20,6 +20,15 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 
 using namespace std;
 int main() {
+
+    // 改行まで読み込む
+    std::string s;
+;
+    while (     std::getline( std::cin, s ) )
+    {
+        // do anything
+    }
+
     int c = 1;
     dp(c);
     std::vector<int> v = {1,2,3,4,5} ;

@@ -22,7 +22,7 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 
 // #define dprint(arg) ;
 //////////////////////////////////////
-
+// 素数判定 試し割り
 bool is_prime(long long N) {
     if (N == 1) return false;
     else if (N == 2) return true;
@@ -52,7 +52,7 @@ void gen_prime_sieve(int N) {
         }
     }
 }
-// 素因数分解 (unordered mapではない)
+// 素因数分解 (unordered mapではなく、ordered) 約数数体に問題ないと思う
 // 素数の場合はその数自身を返す
 // https://ei1333.github.io/luzhiled/snippets/math/prime-factor.html
 // <約数:lint, その約数の数:int>のmapを返す
@@ -99,6 +99,7 @@ void test_prime_factor() {
     for(auto item: prime_factor(13)) { // 13
         while(item.second--) cout << " " << item.first;
     }
+    cout << "\n";
 }
 
 void test_divisors() {

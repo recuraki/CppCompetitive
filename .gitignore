@@ -5,3 +5,16 @@ CMakeFiles/
 cmake-build-debug/
 *.out
 .idea/
+Makefile
+tmp/
+*.cmake
+zzz.cpp
+untitled.cbp
+prime
+main
+_0_test/
+10_atcoder/test/test/sample-1.in
+a.py
+a.c
+_basic
+CMakeCache.txt
