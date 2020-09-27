@@ -22,7 +22,25 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 
 using namespace std;
 int main() {
-    ll a,b;
-    cin >> a >> b;
-    cout << (a*b) / (a+b) << "\n";
+    int n, m;
+    cin >> n >> m;
+    vector<int> datn, datm;
+    int x;
+    int res = 0;
+    REP(i, n) { cin >> x; datn.push_back(x); }
+    int target = 0;
+    REP(i, m) { cin >> x; datm.push_back(x); }
+
+    int curgold;
+    curgold = 0;
+    REP(i, n){
+        if(curgold >= m) break;
+        if(datm[curgold] >= )
+
+    }
+
+    cout << res << "\n";
+
+
+
 }
