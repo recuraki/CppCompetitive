@@ -1,7 +1,15 @@
 #!/bin/bash -x
 
 BASEDIR=/usr/include/x86_64-linux-gnu/c++/7/bits/
+echo host
+echo $HOST
+if test "$HOSTNAME" = "UG020-kanai-MBP13-01.local"; then
+echo "OSX MODE"
+BASEDIR=/usr/local/include/bits/
+fi
+
 GCHDIR=$BASEDIR/stdc++.h.gch/
+
 
 mkdir -p $GCHDIR
 
