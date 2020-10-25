@@ -1,3 +1,4 @@
+# https://qiita.com/drken/items/1b7e6e459c24a83bb7fd
 template <class Abel> struct BIT {
     vector<Abel> dat;
     Abel UNITY_SUM = 0;                     // to be set

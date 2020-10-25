@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-using lint = long long int;
+using ll = long long int;
 using pint = pair<int, int>;
-using plint = pair<lint, lint>;
+using plint = pair<ll, ll>;
 struct fast_ios { fast_ios(){ cin.tie(0); ios::sync_with_stdio(false); cout << fixed << setprecision(20); }; } fast_ios_;
 
 #define ALL(x) (x).begin(), (x).end()
@@ -37,28 +37,30 @@ bool is_prime(long long N) {
 // https://www.geeksforgeeks.org/prime-factorization-using-sieve-olog-n-multiple-queries/?ref=rp
 // 生成される区間は[2, N)  PRIMEMAXは使う最大数に合わせる
 // O(N)
-const long long PRIMEMAXSIZE = (1000000) +1; // NOT 10^9
-vector<long long >isprime(PRIMEMAXSIZE , true);
+const long long PRIMEMAXSIZE = (1000000) +1; // 10^6 開区間なのでこの場合は10^6も検査対象に入る
+vector<long long >primeList(PRIMEMAXSIZE , true);
 vector<long long >primes;
 vector<long long >primeSPF(PRIMEMAXSIZE); // smallest prime factor
 void gen_prime_sieve(int N) {
-    isprime[0] = isprime[1] = false ;
+    primeList[0] = primeList[1] = false ;
     for (long long int i=2; i<N ; i++) {
-        if (isprime[i]) { primes.push_back(i); primeSPF[i] = i; }
+        if (primeList[i]) { primes.push_back(i); primeSPF[i] = i; }
         for (long long int j=0; j < (int)primes.size() &&
              i * primes[j] < N && primes[j] <= primeSPF[i]; j++) {
-            isprime[i * primes[j]]=false;
+            primeList[i * primes[j]]=false;
             primeSPF[i * primes[j]] = primes[j] ;
         }
     }
 }
+
 // 素因数分解 (unordered mapではなく、ordered) 約数数体に問題ないと思う
 // 素数の場合はその数自身を返す
 // https://ei1333.github.io/luzhiled/snippets/math/prime-factor.html
-// <約数:lint, その約数の数:int>のmapを返す
-map<lint, int> prime_factor(lint n) {
-    map<lint, int> ret;
-    for(lint i = 2; i * i <= n; i++) {
+// <約数:ll, その約数の数:int>のmapを返す
+// つまり、3 5 5と出る場合なら、3,1 と 5,2を返す
+map<ll, int> prime_factor(ll n) {
+    map<ll, int> ret;
+    for(ll i = 2; i * i <= n; i++) {
         while(n % i == 0) { ret[i]++; n /= i; }
     }
     if(n != 1) ret[n] = 1; // n is Prime
@@ -67,9 +69,9 @@ map<lint, int> prime_factor(lint n) {
 
 // 約数のリストを返す (unordered mapのprime factorではない)
 // 昇順
-vector<lint> divisors(lint n) {
+vector<ll> divisors(ll n) {
     auto pf = prime_factor(n);
-    vector<lint> res = vector<lint>({1});
+    vector<ll> res = vector<ll>({1});
     if(pf.size() == 1){ res.push_back(n); return res; }
     for(auto item: pf) { res.push_back(item.first); }
     res.push_back(n); return res;
@@ -103,7 +105,7 @@ void test_prime_factor() {
 }
 
 void test_divisors() {
-    vector<lint> res;
+    vector<ll> res;
     cout << "75:" << "\n";
     dp(divisors(75));
     cout << "13:" << "\n";
