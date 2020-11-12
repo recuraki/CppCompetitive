@@ -4,6 +4,7 @@ project(untitled)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cotire/CMake)
 include(cotire)
 
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-std=c++17 -O0 -g -Wall -fsanitize=undefined -Wno-deprecated -Wno-unneeded-internal-declaration")
 set_source_files_properties(10_atcoder/ABC/abc130/A/main.cpp PROPERTIES COMPILE_FLAGS "-include /usr/include/x86_64-linux-gnu/c++/7/bits/stdc++.h")
 set_source_files_properties(99_lib/number/prime.cpp PROPERTIES COMPILE_FLAGS "-include /usr/include/x86_64-linux-gnu/c++/7/bits/stdc++.h")
@@ -19,3 +20,13 @@ cotire(main prime)
 
 
 add_executable(_basic _basic.cpp)
+
+add_executable(a _0_test/a.cpp)
+add_executable(dup _0_test/dup.cpp)
+add_executable(dup2 _0_test/dup2.c)
+add_executable(dup4 _0_test/dup4.c)
+add_executable(ac _0_test/ac.c)
+add_executable(number 99_lib/number/number.cpp)
+add_executable(templ_debug templ_debug.cpp)
+add_executable(string_std 99_lib/string_std.cpp)
+add_executable(counter 99_lib/counter.cpp)

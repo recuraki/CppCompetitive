@@ -6,6 +6,9 @@
 #define IREP(i, n) IFOR(i,0,n)
 
 
+template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
+template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
+
 //////////////////////////////////////
 #include <iostream>
 using namespace std;
@@ -15,32 +18,18 @@ template <typename T> void dprint(T arg) { cout << arg << "\n"; }
 template <typename T> void dprint(const vector<T>& arg) { for_each(begin(arg), end(arg), [](T value){ cout << value << " "; }   ); cout << "\n";  }
 template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin(arg), end(arg), [=](vector<T> arg2){ dprint(arg2); cout << "\n";} );  }
 
-// #define dprint(arg) ;
+
 //////////////////////////////////////
+#define ll long long int
 
-#define ll long long
-
-using namespace std;
-int main() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> datn, datm;
-    int x;
-    int res = 0;
-    REP(i, n) { cin >> x; datn.push_back(x); }
-    int target = 0;
-    REP(i, m) { cin >> x; datm.push_back(x); }
-
-    int curgold;
-    curgold = 0;
-    REP(i, n){
-        if(curgold >= m) break;
-        if(datm[curgold] >= )
-
-    }
-
-    cout << res << "\n";
-
-
-
+// sigma 1 to n
+ll sigma1(ll n){
+    return n*(n+1)/2;
 }
+
+
+int main(int argc, char *argv[]) {
+  int i[1];
+  i[2] = 10;
+}
+
