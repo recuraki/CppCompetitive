@@ -109,14 +109,72 @@ int main() {
         if(get<1>(l) < get<1>(r)) { return true; }
         if(get<1>(l) > get<1>(r)) { return false; }
         if(get<2>(l) < get<2>(r)) { return true; }
-        if(get<2>(l) > get<2>(r)) { return false; }
-    });
+        // if(get<2>(l) > get<2>(r))
+        return false;
+        });
     for (auto x: v2){
         cout << get<0>(x) << " " << get<1>(x) << " "<< get<2>(x) << " ";
         cout << endl;
     }
 
+    cout << "stdout" << endl;
+    cerr << "stderr" << endl;
+
+    vector vi1 {1,2,3,4,5};
+    for_each(ALL(vi1),
+             [](auto x) { cout << x*x << " "; });
+
+    vector vi2 {2,4,6,8};
+    vector vi3 {1,2,3,4};
+    auto isodd = [](auto x) { if(x&1){return true;} else { return false; } };
+    auto iseven = [&](auto x) { return(!isodd(x)); };
+    dp(all_of(ALL(vi2), iseven));
+    dp(all_of(ALL(vi3), iseven));
+    dp(any_of(ALL(vi2), isodd));
+    dp(any_of(ALL(vi3), isodd));
+
+    // find is find iter(not index)
+    dp(*find(ALL(vi2), 8));
+    //dp(find(ALL(vi3), 8));
+
+    std::vector<int> vi4 = {1,2,1,1,3,3} ;
+    dp(count(ALL(vi4), 1));
 
 
+    vector vi5 {0,0,1,0};
+    vector vi6 {2,4,3,6};
+    vector vi7 {2,4,3,6};
+    dp(equal(ALL(vi6), ALL(vi7)));
+    dp(equal(ALL(vi6), ALL(vi5)));
+    dp(equal(ALL(vi6), ALL(vi5), [](auto a, auto b){return a%2 == b%2;}));
+
+    std::vector<int> v11 = {1,2,3,4,5,6,7,8,9} ;
+    std::vector<int> v12 = {4,5,6} ;
+    std::vector<int> v13 = {1,3,5} ;
+    // search can return:  bool res = search()
+    dp(*search(ALL(v11), ALL(v12)));
+    dp(*search(ALL(v11), ALL(v13)));
+
+    // transform: map & copy
+    vector<int> v21 = {1,2,3,4,5};
+    vector<int> v22(v21.size());
+    transform(ALL(v21), v22.begin(),
+              [](auto x) {return pow(x,2); });
+    dp(v22);
+
+    vector<int> v23 = {1,2,2,2,3};
+    dp(v23);
+    replace(ALL(v23), 2, 0);
+    dp(v23);
+
+    vector<int> v24 = {1,2,2,2,3,4,2,2,2,2,5,2,6};
+    auto v24newlast = remove(ALL(v24), 2);
+    dp("v24");
+    for(auto v24p = v24.begin(); v24p != v24newlast; v24p++){
+        cout << *v24p << " ";
+    }
+    cout << endl;
+    v24.resize(distance(v24.begin(), v24newlast));
+    dp(v24);
 
 }
