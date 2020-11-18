@@ -177,4 +177,8 @@ int main() {
     v24.resize(distance(v24.begin(), v24newlast));
     dp(v24);
 
+    array<int, 5> ai1  {1,2,3,4,5};
+
+
+
 }

@@ -83,4 +83,44 @@ int main() {
 
     dp(strd.assign(3,2));
 
+    auto str7 = "recuraki"s;
+    for(auto i = str7.begin(); i != str7.end(); i++){
+        cout << " " << *i;
+    }
+    cout << endl;
+
+    auto text = "quick brown fox jumps over the lazy dog."s ;
+    // 12
+    auto fox = text.find("fox"sv) ;
+    // 32
+    auto dog = text.find("dog"sv) ;
+    auto fax = text.find("fax"sv) ;
+    dp(fox);
+    dp(dog);
+    dp(fax == string::npos);
+
+    text = "cat and cat and hoge and cat"s;
+    dp(text + ": find cat")
+    auto targetstr = "cat"s;
+    auto pos = - targetstr.length();
+    while(1){
+        pos = text.find(targetstr, pos + targetstr.length());
+        if(pos == string::npos) break;
+        cout << pos << " ";
+
+    }
+    cout << endl;
+
+    // replace str s/cat/batbatbat/g
+    auto afterstr="batbatbat"s;
+    pos = - afterstr.length();
+    while(1){
+        pos = text.find(targetstr, pos + afterstr.length());
+        if(pos == string::npos) break;
+        text.replace(pos, targetstr.length(), "batbatbat");
+    }
+    dp(text);
+
+
+
 }
