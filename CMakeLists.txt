@@ -20,13 +20,5 @@ cotire(main prime)
 
 
 add_executable(_basic _basic.cpp)
-
-add_executable(a _0_test/a.cpp)
-add_executable(dup _0_test/dup.cpp)
-add_executable(dup2 _0_test/dup2.c)
-add_executable(dup4 _0_test/dup4.c)
-add_executable(ac _0_test/ac.c)
-add_executable(number 99_lib/number/number.cpp)
 add_executable(templ_debug templ_debug.cpp)
 add_executable(string_std 99_lib/string_std.cpp)
-add_executable(counter 99_lib/counter.cpp)
