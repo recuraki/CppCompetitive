@@ -3,6 +3,7 @@ cotire/
 CMakeFiles/
 10_atcoder/Contest/
 cmake-build-debug/
+cmake-build-release/
 *.out
 .idea/
 Makefile

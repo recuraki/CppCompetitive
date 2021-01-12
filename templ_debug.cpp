@@ -178,7 +178,8 @@ int main() {
     v24.resize(distance(v24.begin(), v24newlast));
     dp(v24);
 
-    array<int, 5> ai1  {1,2,3,4,5};
+    // array<int, 5> ai1  {1,2,3,4,5};
+
 
     cout << "UOS1" << endl;
     unordered_set<int> uos1 = {10,20};
@@ -190,4 +191,5 @@ int main() {
     dprint(uos1);
     cout << "uos1x count(10) "<< uos1.count(10) << endl;
     cout << "uos1x count(12) "<< uos1.count(12) << endl;
+    cout <<"END11122212" << endl;
 }
