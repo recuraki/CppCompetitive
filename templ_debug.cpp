@@ -32,6 +32,7 @@ template <typename T1, typename T2> pair<T1, T2> operator-(const pair<T1, T2> &l
 template <typename T> void dprint(T arg) { cout << arg << "\n"; }
 template <typename T> void dprint(const vector<T>& arg) { for_each(begin(arg), end(arg), [](T value){ cout << value << " "; }   ); cout << "\n";  }
 template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin(arg), end(arg), [=](vector<T> arg2){ dprint(arg2); cout << "\n";} );  }
+template <typename T> void dprint(const unordered_set<T>& arg) { for_each(begin(arg), end(arg), [](T value){ cout << value << " "; }   ); cout << "\n";  }
 //#define dprint(arg) ;
 //////////////////////////////////////
 
@@ -179,6 +180,14 @@ int main() {
 
     array<int, 5> ai1  {1,2,3,4,5};
 
-
-
+    cout << "UOS1" << endl;
+    unordered_set<int> uos1 = {10,20};
+    uos1.emplace(5);
+    uos1.emplace(10);
+    for(auto uos1x = uos1.begin(); uos1x != uos1.end(); uos1x++){
+        cout << *uos1x << "-" << endl;
+    }
+    dprint(uos1);
+    cout << "uos1x count(10) "<< uos1.count(10) << endl;
+    cout << "uos1x count(12) "<< uos1.count(12) << endl;
 }

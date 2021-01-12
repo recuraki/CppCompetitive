@@ -24,12 +24,19 @@ RELEASE_OPTION=''
 
 STDH=$BASEDIR/stdc++.h
 
+echo default.gch
 g++ $STDH -o $GCHDIR/default.gch
+echo debug.gch
 g++ $DEBUG_OPTION $STDH -o $GCHDIR/default-debug.gch
+echo release
 g++ $RELEASE_OPTION $STDH -o $GCHDIR/default-release.gch
+echo debug14
 g++ -std=c++14 $DEBUG_OPTION $STDH -o $GCHDIR/c++14-debug.gch
+echo release14
 g++ -std=c++14 $RELEASE_OPTION $STDH -o $GCHDIR/c++14-release.gch
+echo debug17
 g++ -std=c++17 $DEBUG_OPTION $STDH -o $GCHDIR/c++17-debug.gch
+echo debug17
 g++ -std=c++17 $RELEASE_OPTION $STDH -o $GCHDIR/c++17-release.gch
 
 echo "finish!"
