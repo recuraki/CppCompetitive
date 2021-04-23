@@ -27,3 +27,7 @@ dup
 number
 string_std
 templ_debug
+10_atcoder/ARC/test/
+cmake-build-default/Testing/Temporary/LastTest.log
+Project.cbp
+z.cpp

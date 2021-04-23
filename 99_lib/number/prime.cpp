@@ -23,7 +23,45 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 // #define dprint(arg) ;
 //////////////////////////////////////
 // 素数判定 試し割り
-bool is_prime(long long N) {
+std::random_device rnd;
+// https://tacos.hatenadiary.jp/entry/2020/06/04/001512
+long long modpow(long long a, long long n, long long mod) {
+    long long res = 1;
+    while (n > 0) {
+        if (n & 1) res = res * a % mod;
+        a = a * a % mod;
+        n >>= 1;
+    }
+    return res;
+}
+bool is_prime(ll n){
+    int k = 50;
+    n = abs(n);
+    if(n==2) return true;
+
+    if(n==0) return false;
+    if(n==1) return false;
+    if(n%2==0) return false;
+
+    ll d = (n - 1) >> 1;
+    while( (d&1) == 0) d>>= 1;
+
+    for(int i=0; i < k; ++i){
+        ll a = (rnd() % (n-1) )+ 1;
+        ll t = d;
+        ll y = modpow(a, t, n);
+
+        while(t!=(n-1) && y!=1LL && y!=(n-1) ){
+            y = modpow(y, 2LL, n);
+            t <<= 1;
+        }
+        if (y!=(n-1) && ( (t&1) ==0)){
+            return false;
+        }
+    }
+    return true;
+}
+bool is_prime_damedame(long long N) {
     if (N == 1) return false;
     else if (N == 2) return true;
     else if (N % 2 == 0) return false;
@@ -37,7 +75,7 @@ bool is_prime(long long N) {
 // https://www.geeksforgeeks.org/prime-factorization-using-sieve-olog-n-multiple-queries/?ref=rp
 // 生成される区間は[2, N)  PRIMEMAXは使う最大数に合わせる
 // O(N)
-const long long PRIMEMAXSIZE = (1000000) +1; // 10^6 開区間なのでこの場合は10^6も検査対象に入る
+const long long PRIMEMAXSIZE = (100000) +1; // 10^6 開区間なのでこの場合は10^6も検査対象に入る
 vector<long long >primeList(PRIMEMAXSIZE , true);
 vector<long long >primes;
 vector<long long >primeSPF(PRIMEMAXSIZE); // smallest prime factor
@@ -57,7 +95,7 @@ void gen_prime_sieve(int N) {
 // 素数の場合はその数自身を返す
 // https://ei1333.github.io/luzhiled/snippets/math/prime-factor.html
 // <約数:ll, その約数の数:int>のmapを返す
-// つまり、3 5 5と出る場合なら、3,1 と 5,2を返す
+// つまり、3 5 5と出る場合なら、{3,1} と {5,2}を返す
 map<ll, int> prime_factor(ll n) {
     map<ll, int> ret;
     for(ll i = 2; i * i <= n; i++) {
@@ -65,6 +103,15 @@ map<ll, int> prime_factor(ll n) {
     }
     if(n != 1) ret[n] = 1; // n is Prime
     return ret;
+}
+// expandしたもの。つまり、[3 5 5]などを返す
+vector<ll> prime_factor_expand(ll n){
+    map<ll, int> facts;
+    vector<ll> res;
+    for(auto item: prime_factor(n)) { // 3 5 5
+        while(item.second--) res.emplace_back(item.first);
+    }
+    return res;
 }
 
 // 約数のリストを返す (unordered mapのprime factorではない)
@@ -87,8 +134,11 @@ void test_is_prime(long long i){
 }
 
 void test_gen_prime_sieve(){
+    cout << "prime 1-12" << "\n";
     gen_prime_sieve(13); // 1-12
-    dprint(primes);
+    dp(primes); // primes:2 3 5 7 11
+    //dp(primeList); // 0 0 1 1 0 1 0 1 0 0 0 1  0 1 1 1 1 1 1 1 1
+    //dp(primeSPF);  // 0 0 2 3 2 5 2 7 2 3 2 11 2 0 0 0 0 0 0 0 0
 }
 
 void test_prime_factor() {
@@ -102,6 +152,7 @@ void test_prime_factor() {
         while(item.second--) cout << " " << item.first;
     }
     cout << "\n";
+    dp(prime_factor_expand(75));
 }
 
 void test_divisors() {
@@ -116,8 +167,10 @@ int main(){
     cout << "prime" << "\n";
     test_is_prime(1);
     test_is_prime(3);
-    test_is_prime(25);
     test_is_prime(13);
+    test_is_prime(25);
+    test_is_prime(69);
+    test_is_prime(10007);
     test_gen_prime_sieve();
     test_prime_factor();
     cout << "divv" << "\n";

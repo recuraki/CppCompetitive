@@ -2,6 +2,8 @@
 using namespace std;
 using ll = long long int;
 
+struct fast_ios { fast_ios(){ cin.tie(0); ios::sync_with_stdio(false); cout << fixed << setprecision(20); }; } fast_ios_;
+
 
 #define ALL(x) (x).begin(), (x).end()
 #define FOR(i, begin, end) for(int i=(begin),i##_end_=(end);i<i##_end_;i++)
@@ -18,6 +20,8 @@ using ll = long long int;
 // chmax/min: if update a then true
 template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
 template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
+#define ceil(a,b) ((a) + ((b) - 1)) / (b)
+
 
 template <typename T1, typename T2> pair<T1, T2> operator+(const pair<T1, T2> &l, const pair<T1, T2> &r) { return make_pair(l.first + r.first, l.second + r.second); }
 template <typename T1, typename T2> pair<T1, T2> operator-(const pair<T1, T2> &l, const pair<T1, T2> &r) { return make_pair(l.first - r.first, l.second - r.second); }
@@ -35,6 +39,11 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 template <typename T> void dprint(const unordered_set<T>& arg) { for_each(begin(arg), end(arg), [](T value){ cout << value << " "; }   ); cout << "\n";  }
 //#define dprint(arg) ;
 //////////////////////////////////////
+#define Yes std::cout << "Yes" << std::endl;
+#define No std::cout << "No" << std::endl;
+#define YES std::cout << "YES" << std::endl;
+#define NO std::cout << "NO" << std::endl;
+//////////////////////////////////////
 
 using namespace std;
 int main() {
@@ -48,7 +57,7 @@ int main() {
     }
      */
 
-    int c = 1;
+    int c = 2;
     dp(c);
     std::vector<int> v = {5,2,3,1,4} ;
     dp(v);
@@ -191,5 +200,32 @@ int main() {
     dprint(uos1);
     cout << "uos1x count(10) "<< uos1.count(10) << endl;
     cout << "uos1x count(12) "<< uos1.count(12) << endl;
-    cout <<"END11122212" << endl;
+    cout <<"END111222ww12" << endl;
+
+    string str31 = "hogehoge";
+    string str32;
+    str32 = move(str31);
+    dp(str31);
+    dp(str32);
+
+    vector<int> vi31 = {1,2,3,4,5};
+    dp(vi31); // vi31:1 2 3 4 5
+    for_each(ALL(vi31), [](auto x) {x++; }); // valueキャプチャ
+    dp(vi31); // vi31:1 2 3 4 5
+    for_each(ALL(vi31), [](auto & x) {x++;}); // ref キャプチャ
+    dp(vi31); // vi31:2 3 4 5 6
+    for(auto x: vi31) {++x;}
+    dp(vi31); // vi31:2 3 4 5 6
+    for(auto &x: vi31) {++x;}
+    dp(vi31); // vi31:3 4 5 6 7
+
+    int i41= 100;
+    auto f = [=](){int i=i41;};
+    f();
+    dp(i41);
+    auto f2 = [&](){i41++;};
+    f2();
+    dp(i41);
+
+    [](auto s){cout << "[" << s << "]" << "\n";} ("hogehoge");
 }
