@@ -76,7 +76,6 @@ public:
             return;
         }
         assert(qR.count(x) != 0);
-        cout <<"era"<<"\n";
         auto itr = qR.find(x);
         assert(itr != qR.end());
         qR.erase(itr);
