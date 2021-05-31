@@ -107,6 +107,7 @@ constexpr ll MOD = 998244353;
 using mint = ModInt<MOD>;
 
 
+
 // sigma i : 1 to n
 ll sigma1(ll n){
     return n*(n+1)/2;
