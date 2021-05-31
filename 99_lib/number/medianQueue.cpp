@@ -13,12 +13,12 @@ public:
         if(qL.size() == 1 && qR.size() == 0) {}
         else if( (qL.size() + qR.size()) %2 == 0){
             // 偶数なら同じ数にしたい
-            while(qL.size() > qR.size()){ // LからRに移す
+            while(qL.size() > qR.size()){ // LからRに移す [1,2,3] [4] -> [1,2] [3,4]
                 auto ret = qL.begin();
                 qR.insert(-*ret);
                 qL.erase(*ret);
             }
-            while(qL.size() < qR.size()){ // RからLに移す
+            while(qL.size() < qR.size()){ // RからLに移す [1] [2,3,4] -> [1,2] [3,4]
                 auto ret = qR.begin();
                 qL.insert(-*ret);
                 qR.erase(*ret);
@@ -26,18 +26,18 @@ public:
         }
         else{
             // 奇数なら [1,2,3] [4,5]にしたい
-            while(qL.size() > (qR.size() + 1)){ // LからRに移す [1,2,3,4] [5]
+            while(qL.size() > (qR.size() + 1)){ // LからRに移す [1,2,3,4] [5] -> [1,2,3] [4,5]
                 auto ret = qL.begin();
                 qR.insert(-*ret);
                 qL.erase(ret);
             }
-            while( (qL.size()+1) <= qR.size()){ // RからLに移す [1,2] [3,4,5]
+            while( (qL.size()+1) <= qR.size()){ // RからLに移す [1,2] [3,4,5] -> [1,2,3] -> [4,5]
                 auto ret = qR.begin();
                 qL.insert(-*ret);
                 qR.erase(ret);
             }
         }
-        // 次は左右のずれをなくしたい
+        // 次は左右のずれをなくしたい もしも、 [1,3] [2,4] then 3<->4 -> [1,2] [3,4]
         if (qR.size() == 0) return;
         while(1){
             auto numL = qL.begin();

@@ -1,7 +1,11 @@
 #include <bits/stdc++.h>
 #include <atcoder/all>
 #define FOR(i, begin, end) for(int i=(begin),i##_end_=(end);i<i##_end_;i++)
+#define ALL(x) (x).begin(), (x).end()
 #define REP(i, n) FOR(i,0,n)
+
+#define FASTIO() cin.tie(0); ios::sync_with_stdio(false)
+
 using namespace std;
 using namespace atcoder;
 const int numNode = 2*100000;
@@ -24,6 +28,7 @@ T mindiffsearch(vector<T> &l, T x){
 }
 
 int main(int argc, char *argv[]) {
+    FASTIO();
     int n; cin >> n;
     vector<int> cnt(3);
     vector<vector<ll>> dat(3);
@@ -37,6 +42,7 @@ int main(int argc, char *argv[]) {
     }
     if( (cnt.at(0)%2 + cnt.at(1)%2 + cnt.at(2)%2) == 0){
         cout << 0 << "\n";
+        return 0;
     }
 
     if(cnt.at(0)%2 == 0) {}
@@ -45,10 +51,37 @@ int main(int argc, char *argv[]) {
     else { assert(false); }
     // dat[0] = even
 
-    ll res1 = 1e18;
-    for(auto x: dat.at(1)) res1 = min(res1, mindiffsearch(dat.at(2), x));
-    cout << res1 << "\n";
+    REP(i, 3) sort(ALL(dat.at(i)));
 
+    ll res1 = 1e18;
+    REP(i, cnt.at(1)){
+        auto x = dat.at(1).at(i);
+        res1 = min(res1, mindiffsearch(dat.at(2), x));
+    }
+
+    // 偶数と奇数1, 偶数と奇数2 を重複なく取る
+    ll res2 = 1e18;
+    if(cnt.at(0) > 0) {
+        int nodeS = 2 * n, nodeT = 2 * n + 1;
+        int node1 = 2 * n + 2, node2 = 2 * n + 3;
+        mcf_graph<int, long long> mcf(2 * n + 4);
+        mcf.add_edge(node1, nodeT, 1, 0);
+        mcf.add_edge(node2, nodeT, 1, 0);
+        REP(i, cnt.at(0)) {
+            mcf.add_edge(nodeS, i, 1, 0);
+            mcf.add_edge(i, node1, 1, mindiffsearch(dat.at(1), dat.at(0).at(i)));
+            mcf.add_edge(i, node2, 1, mindiffsearch(dat.at(2), dat.at(0).at(i)));
+        }
+        auto result = mcf.flow(nodeS, nodeT, 2);
+        assert(result.first == 2);
+        res2 = result.second;
+        //for (auto e: mcf.edges()) {
+        //    cout << "s,t=" << e.from << "," << e.to << ", cap/cost"", " << e.cap << "," << e.cost << " flow:" << e.flow << "\n";
+        //}
+        //cout << "mcf:" << result.first << "-" << result.second << "\n";
+    }
+
+    cout << min(res1, res2) << "\n";
 
 }
 
