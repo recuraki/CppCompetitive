@@ -16,12 +16,12 @@ public:
             while(qL.size() > qR.size()){ // LからRに移す [1,2,3] [4] -> [1,2] [3,4]
                 auto ret = qL.begin();
                 qR.insert(-*ret);
-                qL.erase(*ret);
+                qL.erase(ret);
             }
             while(qL.size() < qR.size()){ // RからLに移す [1] [2,3,4] -> [1,2] [3,4]
                 auto ret = qR.begin();
                 qL.insert(-*ret);
-                qR.erase(*ret);
+                qR.erase(ret);
             }
         }
         else{
@@ -62,7 +62,7 @@ public:
         return -(ret);
     }
     void add(T x){ // 新しい値を追加する
-        qL.template emplace(-x);
+        qL.emplace(-x);
         balanceAll();
     }
     void erase(T x){ // 存在する値を消す
@@ -109,7 +109,36 @@ void medianQueue_sample1(){
     cout << mq.get() << "\n"; //30
 }
 
+void medianQueue_sample2(){
+    medianQueue<int> mq;
+    mq.add(10); // 10
+    mq.dump();
+    mq.add(10); // 10
+    mq.dump();
+    cout << mq.get() << "\n"; // 10
+    mq.add(10); // 10
+    cout << mq.get() << "\n"; // 10
+    mq.add(10); // 10
+    cout << mq.get() << "\n"; // 10
+    mq.add(10); // 10
+    cout << mq.get() << "\n"; // 10
+
+    mq.dump();
+    mq.erase(10);// 20 30 30
+    mq.dump();
+    cout << mq.get() << "\n"; //30
+    mq.erase(10);// 20 30 30
+    cout << mq.get() << "\n"; //30
+    mq.erase(10);// 20 30 30
+    cout << mq.get() << "\n"; //30
+    mq.erase(10);// 20 30 30
+    cout << mq.get() << "\n"; //30
+    mq.erase(10);// 20 30 30
+    cout << mq.get() << "\n"; //30
+}
+
 int main(){
-    medianQueue_sample1();
+    //medianQueue_sample1();
+    medianQueue_sample2();
     return 0;
 }

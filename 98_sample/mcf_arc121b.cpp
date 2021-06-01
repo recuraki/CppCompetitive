@@ -40,19 +40,22 @@ int main(int argc, char *argv[]) {
         else if(b.at(0) == 'B') {dat.at(2).emplace_back(a); cnt.at(2)++; }
         else { assert(false); }
     }
+
+    // 全部偶数のときは0が答え
     if( (cnt.at(0)%2 + cnt.at(1)%2 + cnt.at(2)%2) == 0){
         cout << 0 << "\n";
         return 0;
     }
 
+    // 偶数を[0]にもっていく
     if(cnt.at(0)%2 == 0) {}
     else if(cnt.at(1)%2 == 0) {swap(cnt.at(0), cnt.at(1)); swap(dat.at(0), dat.at(1)); }
     else if(cnt.at(2)%2 == 0) {swap(cnt.at(0), cnt.at(2)); swap(dat.at(0), dat.at(2)); }
     else { assert(false); }
-    // dat[0] = even
 
     REP(i, 3) sort(ALL(dat.at(i)));
 
+    // 奇数1と奇数２から最小の差の値だけを得る
     ll res1 = 1e18;
     REP(i, cnt.at(1)){
         auto x = dat.at(1).at(i);
@@ -61,24 +64,27 @@ int main(int argc, char *argv[]) {
 
     // 偶数と奇数1, 偶数と奇数2 を重複なく取る
     ll res2 = 1e18;
-    if(cnt.at(0) > 0) {
-        int nodeS = 2 * n, nodeT = 2 * n + 1;
-        int node1 = 2 * n + 2, node2 = 2 * n + 3;
-        mcf_graph<int, long long> mcf(2 * n + 4);
-        mcf.add_edge(node1, nodeT, 1, 0);
-        mcf.add_edge(node2, nodeT, 1, 0);
-        REP(i, cnt.at(0)) {
-            mcf.add_edge(nodeS, i, 1, 0);
-            mcf.add_edge(i, node1, 1, mindiffsearch(dat.at(1), dat.at(0).at(i)));
-            mcf.add_edge(i, node2, 1, mindiffsearch(dat.at(2), dat.at(0).at(i)));
+    {
+        if (cnt.at(0) > 0) {
+            int nodeS = 2 * n, nodeT = 2 * n + 1;
+            int node1 = 2 * n + 2, node2 = 2 * n + 3;
+            mcf_graph<int, long long> mcf(2 * n + 4);
+            mcf.add_edge(node1, nodeT, 1, 0);
+            mcf.add_edge(node2, nodeT, 1, 0);
+            REP(i, cnt.at(0)) {
+                mcf.add_edge(nodeS, i, 1, 0);
+                mcf.add_edge(i, node1, 1, mindiffsearch(dat.at(1), dat.at(0).at(i)));
+                mcf.add_edge(i, node2, 1, mindiffsearch(dat.at(2), dat.at(0).at(i)));
+            }
+            auto result = mcf.flow(nodeS, nodeT, 2);
+            assert(result.first == 2);
+            res2 = result.second;
+            // フローを流した後の結果．これでflowをみると使った辺が復元できる
+            //for (auto e: mcf.edges()) {
+            //    cout << "s,t=" << e.from << "," << e.to << ", cap/cost"", " << e.cap << "," << e.cost << " flow:" << e.flow << "\n";
+            //}
+            //cout << "mcf:" << result.first << "-" << result.second << "\n";
         }
-        auto result = mcf.flow(nodeS, nodeT, 2);
-        assert(result.first == 2);
-        res2 = result.second;
-        //for (auto e: mcf.edges()) {
-        //    cout << "s,t=" << e.from << "," << e.to << ", cap/cost"", " << e.cap << "," << e.cost << " flow:" << e.flow << "\n";
-        //}
-        //cout << "mcf:" << result.first << "-" << result.second << "\n";
     }
 
     cout << min(res1, res2) << "\n";
