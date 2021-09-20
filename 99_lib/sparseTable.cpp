@@ -27,8 +27,9 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 
 
 /*
-auto op = [](int a, int b) {return min(a,b);};
-SparseTable<int> st(dat, op);
+USAGE:
+ auto op = [] (int a, int b) {return min(a,b);};
+ SparseTable<int> st(dat, op);
  */
 template<typename T>
 class SparseTable {
@@ -62,7 +63,7 @@ public:
     }
 };
 
-# https://qiita.com/drken/items/1b7e6e459c24a83bb7fd
+// https://qiita.com/drken/items/1b7e6e459c24a83bb7fd
 template <class Abel> struct BIT {
     vector<Abel> dat;
     Abel UNITY_SUM = 0;                     // to be set
@@ -107,3 +108,7 @@ template <class Abel> struct BIT {
         return res + 1;
     }
 };
+
+int main(){
+    return 0;
+}

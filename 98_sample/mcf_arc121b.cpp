@@ -18,7 +18,7 @@ using ll = long long;
 // lからxに一番近い数字を探し距離(絶対値)を返す
 // l, xはTを要求する
 template <typename T>
-T mindiffsearch(vector<T> &l, T x){
+T MinDiffSearch(vector<T> &l, T x){
     auto sz = l.size();
     auto p = lower_bound(l.begin(), l.end(), x);
     auto indl = distance(l.begin(), p);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     ll res1 = 1e18;
     REP(i, cnt.at(1)){
         auto x = dat.at(1).at(i);
-        res1 = min(res1, mindiffsearch(dat.at(2), x));
+        res1 = min(res1, MinDiffSearch(dat.at(2), x));
     }
 
     // 偶数と奇数1, 偶数と奇数2 を重複なく取る
@@ -73,8 +73,8 @@ int main(int argc, char *argv[]) {
             mcf.add_edge(node2, nodeT, 1, 0);
             REP(i, cnt.at(0)) {
                 mcf.add_edge(nodeS, i, 1, 0);
-                mcf.add_edge(i, node1, 1, mindiffsearch(dat.at(1), dat.at(0).at(i)));
-                mcf.add_edge(i, node2, 1, mindiffsearch(dat.at(2), dat.at(0).at(i)));
+                mcf.add_edge(i, node1, 1, MinDiffSearch(dat.at(1), dat.at(0).at(i)));
+                mcf.add_edge(i, node2, 1, MinDiffSearch(dat.at(2), dat.at(0).at(i)));
             }
             auto result = mcf.flow(nodeS, nodeT, 2);
             assert(result.first == 2);

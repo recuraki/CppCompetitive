@@ -34,6 +34,7 @@ long long modpow(long long a, long long n, long long mod) {
     }
     return res;
 }
+// ミラーラビン
 bool is_prime(ll n){
     int k = 50;
     n = abs(n);
@@ -61,11 +62,14 @@ bool is_prime(ll n){
     }
     return true;
 }
+
+
+
+
 bool is_prime_damedame(long long N) {
     if (N == 1) return false;
     else if (N == 2) return true;
     else if (N % 2 == 0) return false;
-
     for (long long i = 3; i * i <= N; i = i + 2) {
         if (N % i == 0) return false;
     }
@@ -74,7 +78,10 @@ bool is_prime_damedame(long long N) {
 
 // https://www.geeksforgeeks.org/prime-factorization-using-sieve-olog-n-multiple-queries/?ref=rp
 // 生成される区間は[2, N)  PRIMEMAXは使う最大数に合わせる
-// O(N)
+// SPF: ある値を割り切れる最小の数。12なら2, 素数ならその数自身
+// PrimeList[x]: xが素数なら1
+// primes 素数のリスト
+// O(logN)
 const long long PRIMEMAXSIZE = (100000) +1; // 10^6 開区間なのでこの場合は10^6も検査対象に入る
 vector<long long >primeList(PRIMEMAXSIZE , true);
 vector<long long >primes;
@@ -91,7 +98,7 @@ void gen_prime_sieve(int N) {
     }
 }
 
-// 素因数分解 (unordered mapではなく、ordered) 約数数体に問題ないと思う
+// 素因数分解 (unordered mapではなく、ordered)
 // 素数の場合はその数自身を返す
 // https://ei1333.github.io/luzhiled/snippets/math/prime-factor.html
 // <約数:ll, その約数の数:int>のmapを返す
@@ -105,6 +112,7 @@ map<ll, int> prime_factor(ll n) {
     return ret;
 }
 // expandしたもの。つまり、[3 5 5]などを返す
+// prime_factor_expand(75):3 5 5
 vector<ll> prime_factor_expand(ll n){
     map<ll, int> facts;
     vector<ll> res;
@@ -116,6 +124,8 @@ vector<ll> prime_factor_expand(ll n){
 
 // 約数のリストを返す (unordered mapのprime factorではない)
 // 昇順
+// divisors(75):1 3 5 75
+// divisors(13):1 13
 vector<ll> divisors(ll n) {
     auto pf = prime_factor(n);
     vector<ll> res = vector<ll>({1});
