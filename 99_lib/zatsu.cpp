@@ -30,7 +30,7 @@ public:
     unordered_map<int, T> zatsuTableReverse;
     vector<T> zatsuAfter;
 
-    vector<T> load(vector<T>& dat){
+    vector<T> load(const vector<T>& dat){
         vector<T> tmp;
         vector<T> res;
         // create all value uniq set
@@ -48,7 +48,7 @@ public:
         return res;
     }
 
-    vector<T> restore(vector<T>& dat){
+    vector<T> restore(const vector<T>& dat){
         vector<T> res;
         for(T x: dat) res.template emplace_back(this->zatsuTableReverse[x]);
         return res;

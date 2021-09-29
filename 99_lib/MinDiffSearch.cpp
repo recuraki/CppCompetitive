@@ -5,7 +5,6 @@ using namespace std;
 using ll = long long;
 
 // lからxに一番近い数字を探し距離(絶対値)を返す
-// l, xはTを要求する
 template <typename T>
 T MinDiffSearch(vector<T> &l, T x){
     auto sz = l.size();

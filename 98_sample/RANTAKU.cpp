@@ -19,20 +19,33 @@ inline int f(point &xx, point &yy){
 }
 
 int main(){
-
-    int s, t;
-    cin >> s>> t;
-    int res = 0;
-    REP(a, 101){
-        REP(b, 101){
-            REP(c, 101){
-                if(a+b+c > s) continue;
-                if(a*b*c > t) continue;
-                ++res;
-
-            }
-        }
+    int n; cin >> n;
+    vector<point> dat;
+    int a, b;
+    REP(i, n) {
+        cin >> a>>b;
+        //cout << i << ":" << a << "," << b << "\n";
+        dat.emplace_back(point{a, b});
     }
-    cout << res << "\n";
+    REP(i, n){
+        //cout << i << ":" << dat[i].x << "," << dat[i].y << "\n";
+    }
+
+    double st=clock();
+    int p1, p2, p3, p4;
+    //cout << qwq(n) << qwq(n) << "\n";
+    p1 = (qwq(n));
+    p2 = (qwq(n));
+    auto base = f(dat[p1], dat[p2]);
+    int c = -1;
+    while((clock()-st)/CLOCKS_PER_SEC<=1.8) {
+        p3 = (qwq(n));
+        p4 = (qwq(n));
+
+    }
+
+    cout << base << "\n";
+
+
     return 0;
 }

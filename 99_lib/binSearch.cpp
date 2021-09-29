@@ -23,14 +23,12 @@ void abc146_c(){
     // abc146_c
     ll a, b, x, mid;
     cin >> a >> b >> x;
-
     auto func = [&](ll &trynum){
         string s = to_string(trynum);
         ll val = a * trynum + b * (ll)s.size();
         if(val <= x) return true;
         return false;
     };
-
     // [ok, ng) for max value いける最大の値を求めたいとき
     // (ng, ok] for min value 可能となる最小の値を出したいとき
     // CATION: ok is result  (NOT mid)
@@ -41,14 +39,35 @@ void abc146_c(){
         if(func(mid)) ok = mid;
         else ng = mid;
     }
-
-    //if(res > 1e9) res = 1e9;
-    //if(res < 0) res = 0;
-    //res = clamp(res, 0LL, (ll)1e9);
-
     cout << ok << "\n";
-
 }
+
+bool abc146_c_2_func(ll &trynum, ll &a, ll &b, ll &x) {
+    string s = to_string(trynum);
+    ll val = a * trynum + b * (ll)s.size();
+    if(val <= x) return true;
+    return false;
+}
+
+void abc146_c_2(){
+    // abc146_c
+    ll a, b, x, mid;
+    cin >> a >> b >> x;
+
+
+    // [ok, ng) for max value いける最大の値を求めたいとき
+    // (ng, ok] for min value 可能となる最小の値を出したいとき
+    // CATION: ok is result  (NOT mid)
+    ll ok = 0;
+    ll ng = 1e9 + 1;
+    while(abs(ok - ng) > 1){
+        mid = (ok + ng) / 2;
+        if(abc146_c_2_func(mid, a, b, x)) ok = mid;
+        else ng = mid;
+    }
+    cout << ok << "\n";
+}
+
 
 void abc207_b(){
     ll a, b, c, d;
@@ -75,5 +94,7 @@ void abc207_b(){
 
 using namespace std;
 int main() {
-    abc207_b();
+    //abc146_c();
+    abc146_c_2();
+    //abc207_b();
 }
