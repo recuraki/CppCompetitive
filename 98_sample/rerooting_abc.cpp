@@ -14,7 +14,7 @@ using ll = long long int;
  * この実装はノードの数やノード自身のコストを数えるのには使えるが、
  * 辺がコストを持つ場合はうまくいかない。(辺にcostを持たせているに使っていない)
  */
-template <class S, S (*op)(S, S), S (*e)(), S (*initNodeValue)()> struct rerooting{
+template <class S, S (*op)(S, S, ll), S (*e)(), S (*initNodeValue)()> struct rerooting{
 public:
 
     // 辺の持つ情報(make_edgeで辺が持つ情報)
@@ -59,7 +59,7 @@ public:
         for(auto x: G.at(curnode)) {
             if (parent.at(x.nextnode) != -2) continue;
             dfsCoroutine(x.nextnode, curnode);
-            dat.at(curnode) = op(dat.at(curnode), dat.at(x.nextnode));
+            dat.at(curnode) = op(dat.at(curnode), dat.at(x.nextnode), x.cost);
         }
     }
 
@@ -83,7 +83,11 @@ public:
         for(auto x: G.at(curnode)) {
             // 親は拾わない。このルーチンの前に伝搬されているから
             if(x.nextnode == parentNode) continue;
-            childList.template emplace_back(x.nextnode, dat.at(x.nextnode));
+            pair<S, ll> tmp;
+            tmp.first = dat.at(x.nextnode);
+            tmp.second = x.cost;
+            tmp.first.cost += x.cost;
+            childList.template emplace_back(x.nextnode, tmp);
         }
 
         // rerootingのための累積和的な処理用
@@ -101,8 +105,8 @@ public:
         vector<S> cumListFromR = vector<S>(childNum, e());
         REP(i, childNum - 1){ // childNumまで回す。これが、Nまでじゃないのは、上記のように"x"の場所があるから
             //cout << " rerootCoroutine: cumcalc" << childList[i].first << "\n";
-            cumListFromL[i+1]            = cumListFromL[i] + childList[i].second;
-            cumListFromR[childNum-1-i-1] = cumListFromR[childNum-1-i] + childList[childNum-1-i].second;
+            cumListFromL[i+1]            = op(cumListFromL[i+1], childList[i].second.first, 0);
+            cumListFromR[childNum-1-i-1] = op(cumListFromR[childNum-1-i-1], childList[i].second.first, 0);
         }
 
         // 各子のRerootを行う
@@ -114,13 +118,16 @@ public:
             // 子に伝搬する情報を作る。まず、渡す情報は、このノードの初期値だとする
             S costToChild = initNodeValue();
             // 子に渡す情報に、親からの情報をopで足す (=親から今のノードにたどり着いた)
-            costToChild = op(costToChild, costFromParent);
+            costToChild = op(costToChild, costFromParent, 0);
             // 子に渡す情報に、左側からの情報をopで足す (=左からノードにたどり着いた)
-            costToChild = op(costToChild, cumListFromL[i]);
+            costToChild = op(costToChild, cumListFromL[i], 0);
             // 子に渡す情報に、右側からの情報をopで足す (=右からノードにたどり着いた)
-            costToChild = op(costToChild, cumListFromR[i]);
-            // 子に情報を伝搬する
-            dat.at(childNode) = op(dat.at(childNode), costToChild);
+            costToChild = op(costToChild, cumListFromR[i], 0);
+            // 子に情報を伝搬する with road cost
+
+            costToChild.cost += childList[i].second.second;
+
+            dat.at(childNode) = op(dat.at(childNode), costToChild, 0);
             // さらにその子の下を掘る。この際に、このノードに伝えた情報を渡す
             rerootCoroutine(childNode, costToChild);
         }
@@ -131,34 +138,40 @@ public:
 // ノードが持つ情報
 struct node{
     ll cost;
-    int nodenum;
+    ll kankoCost;
     // + operatorは必要で、これはrerootの時の累積和に必要
     // opはnodenumを足すが、これは足さない
     node operator+(const node &r){
-        return node{cost + r.cost, nodenum + r.nodenum};
+        return node{cost + r.cost, kankoCost};
     }
 };
 
 // ノードの零元。これがないと、rerootの時の累積和ができない
-auto e = []{ return node{0, 0}; };
+auto e = []{ return node{0,  0}; };
 
 // ノードの初期値。
-auto initVal = []{ return node{0, 1}; };
+auto initVal = []{ return node{0,  0}; };
 
-// ノードのマージ演算 xに対してyを足す
-auto op = [](const node x, const node y){
-    return node{x.cost + y.cost + y.nodenum, // cost
-                x.nodenum + y.nodenum}; // nodenum
+// ノードのマージ
+auto op = [](const node x, const node y, const ll roadCost){
+    return node{max(x.cost, y.cost + roadCost) , // cost
+                x.kankoCost}; // nodenum
 };
 
 void abc220_f(void){
     int n; cin >> n;
     rerooting<node, op, e, initVal> rr(n);
-    int s, t;
+    int s, t, w;
     REP(i, n-1){
-        cin >> s >> t;
+        cin >> s >> t >> w;
         s--; t--;
-        rr.make_edge(s, t, 1);
+        rr.make_edge(s, t, w);
+    }
+    ll kankocost;
+    REP(i, n){
+        cin >> kankocost;
+        rr.dat.at(i).kankoCost = kankocost;
+        rr.dat.at(i).cost = kankocost;
     }
     rr.dfs(0);
     rr.reroot(0);

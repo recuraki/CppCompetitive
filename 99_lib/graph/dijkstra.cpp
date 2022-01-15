@@ -53,8 +53,7 @@ public:
         this->lastSource = -1;
     }
     void makeEdge(int curnode, int nextnode, T cost){
-        assert(curnode < this->nodeNum);
-        assert(nextnode < this->nodeNum);
+        assert(nextnode < this->nodeNum); // curnode will be asserted by "at()"
         this->graph.at(curnode).emplace_back((edge){cost, nextnode});
     }
     void solve(int nodeS, int nodeT){

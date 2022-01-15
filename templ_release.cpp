@@ -25,6 +25,13 @@ template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } retu
 template <typename T1, typename T2> pair<T1, T2> operator+(const pair<T1, T2> &l, const pair<T1, T2> &r) { return make_pair(l.first + r.first, l.second + r.second); }
 template <typename T1, typename T2> pair<T1, T2> operator-(const pair<T1, T2> &l, const pair<T1, T2> &r) { return make_pair(l.first - r.first, l.second - r.second); }
 
+#include <time.h>     // for clock()
+#define clkstart start = clock();
+#define clkend  end = clock();std::cout << "duration = " << (double)(end - start) / CLOCKS_PER_SEC << "sec.\n";
+/*
+ *     clock_t start;
+    clock_t end;
+ */
 //////////////////////////////////////
 // tree.find_by_order(k番目の要素 k=0-indexed)
 //tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> dat;

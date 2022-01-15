@@ -1,24 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// cumulative sum 1D
-
+// 基本的な累積和
 template <class T> struct cumSum1D{
 public:
     vector<T> sdat;
-    void load(vector<T> dat){
+    void load(const vector<T> &dat){
         this->sdat.resize(dat.size() + 1);
         this->sdat.at(0) = 0;
         for(int i = 0; i < dat.size(); i++){
             this->sdat.at(i + 1) = this->sdat.at(i) + dat.at(i);
         }
     };
-    T query(int l, int r){
+    T query(const int l, const int r){
         /* Query [l, r)  //Close, Open */
         assert(l <= r);
         return(this->sdat.at(r) - this->sdat.at(l));
     };
 };
+
 
 void cumSum1D_sample1(){
     vector<int> a = {1,2,3,4,5};

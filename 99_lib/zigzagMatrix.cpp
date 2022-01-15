@@ -30,7 +30,7 @@ public:
     int mazeh, mazew;
     int windoww, windowh;
     int movew, moveh, maxturn; // ウィンドウが動けるサイズ
-    void load(vector<vector<T>> &maze, int windowh, int windoww){
+    void load(vector<vector<T>> &maze, const int windowh, const int windoww){
         this->maze = &maze;
         this->mazeh = maze.size();
         this->mazew = maze.at(0).size();
