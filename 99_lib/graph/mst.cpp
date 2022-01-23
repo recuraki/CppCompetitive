@@ -83,7 +83,7 @@ namespace atcoder {
             result.erase(
                     std::remove_if(result.begin(), result.end(),
                                    [&](const std::vector<int>& v) { return v.empty(); }),
-                                   result.end());
+                    result.end());
             return result;
         }
 

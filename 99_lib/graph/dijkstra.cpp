@@ -168,6 +168,56 @@ void abc214_c(){
     REP(i, n) cout << dj.cost.at(i) << "\n";
 }
 
+// https://atcoder.jp/contests/typical90/tasks/typical90_aq
+// 01BFSでない解法
+void tenkei43(){
+    void solve(){
+        int h, w; cin >> h >> w;
+        int r1,c1,r2,c2; cin >> r1>>c1>>r2>>c2;
+        --r1; --r2; --c1; --c2;
+        char maze[h*w];
+        memset(maze, 0, sizeof(maze));
+        REP(hh, h) REP(ww, w) cin >> maze[hh*w + ww];
+        int masu = h*w; // この迷路のマス数
+        dijkstra<int> dj(4*masu + 2);
+        // 各向き間の辺を張る
+        REP(ind, masu) {
+            FOR(i, 0, 4) {
+                FOR(j, i + 1, 4) {
+                    dj.makeEdge(masu*i + ind, masu*j + ind, 1);
+                    dj.makeEdge(masu*j + ind, masu*i + ind, 1);
+                }
+            }
+        }
+        int s, t;
+        s = masu*4; // start node
+        t = masu*4 + 1; // goal node
+        // s -> startnodeにcost0で辺を貼る
+        FOR(i, 0, 4) dj.makeEdge(s, masu * i + (w * r1) + c1, 0);
+        // goalnode -> tにcost0で辺を張る
+        FOR(i, 0, 4) dj.makeEdge(masu * i + (w * r2) + c2, t, 0);
+        int nh, nw;
+        // 0:up, 1: right, 2:down, 3:left の レイヤだとする
+        REP(hh, h){
+            REP(ww, w){
+                // 上にマスがあり && 上が"."なら、 cost0で辺を張る
+                nh = hh - 1; nw = ww;
+                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*0 + w * hh + ww, masu*0 + w * nh + nw, 0);
+                nh = hh; nw = ww + 1;
+                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*1 + w * hh + ww, masu*1 + w * nh + nw, 0);
+                nh = hh + 1; nw = ww;
+                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*2 + w * hh + ww, masu*2 + w * nh + nw, 0);
+                nh = hh; nw = ww - 1;
+                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*3 + w * hh + ww, masu*3 + w * nh + nw, 0);
+            }
+        }
+        // s->tでダイクストラする
+        dj.solve(s, t);
+        // 制約上、この問題ではunreachはないが一応。
+        if(dj.cost[t] == dj.INF) cout << -1 << "\n";
+        else cout << dj.cost[t] << "\n";
+    }
+}
 
 using namespace std;
 int main() {
@@ -175,5 +225,6 @@ int main() {
     //test();
     //GRL_1_A();
     //abc211_d();
-    abc214_c();
+    //abc214_c();
+    tenkei43();
 }

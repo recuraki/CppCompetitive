@@ -32,7 +32,11 @@ struct qdata{
 
 /*
  * オイラーツアー
+ * https://qiita.com/recuraki/items/72e37eb9be9f71bc623a
+ * 造りかけ。これだと、辺のコストしか持てない
+ *
  * T: 辺と頂点のコストの型
+ * この実装では、ノードの情報をpyrhonでいう ~x (-x -1)を取って、行きと帰りを区別している。
  */
 template<typename T>
 class eulerTour{
@@ -49,7 +53,6 @@ public:
     vector<int> nodeOut;
     vector<int> parent;
     vector<vector<edge>> graph;
-
 
     eulerTour(int nodeNum){
         this->graph.resize(nodeNum);
@@ -83,7 +86,6 @@ public:
         q.push(qdata{0, 0});
         int curtime = -1;
         bool isLeaf;
-
         // depth は visited (さかのぼり禁止)にも使われる
         while(q.size() > 0){
             ++curtime; // timeをインクリメントして
@@ -119,9 +121,10 @@ public:
         }
 
     }
-
-
 }
+
+
+
 
 int main(int argc, char *argv[]) {
     qdata curDat;
