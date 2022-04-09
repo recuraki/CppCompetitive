@@ -2,21 +2,26 @@
 BASEDIR=/usr/include/x86_64-linux-gnu/c++/9/bits/
 # システムディレクトリに書き込みたいのでrootを必要とする
 if test "`id -u`" -ne 0; then echo PLZ sudo;  exit 1; fi
+# プリコンパイル済みヘッダは完全に同じg++オプションの時しか有効にならない
+# 私の場合は、aliasで使うDEBUGか、g++ main.cppなどオプションなししか使わない
+DEBUG_OPTION='-std=c++17 -O0 -g -Wall -fsanitize=undefined -Wno-deprecated -Wno-unneeded-internal-declaration'
+DEBUG_OPTION='-std=c++17 -O0 -g -Wall -fsanitize=undefined -fsanitize-undefined-trap-on-error -Wno-deprecated -Wno-unneeded-internal-declaration '
+RELEASE_OPTION=''
+
 # OSX用のディレクトリにする(自分の環境の場合)
 if test "$(uname)" == 'Darwin' ; then
  echo "OSX MODE"
  BASEDIR=/usr/local/include/bits/
- BASEDIR=/opt/homebrew/include/c++//11/aarch64-apple-darwin21/bits/
+ BASEDIR=/opt/homebrew/include/c++/11/aarch64-apple-darwin21/bits/
 fi
-# コンパイル済みのヘッダを書き込むディレクトリ
-GCHDIR=$BASEDIR/stdc++.h.gch/
+
+
 mkdir -p $GCHDIR
-# プリコンパイル済みヘッダは完全に同じg++オプションの時しか有効にならない
-# 私の場合は、aliasで使うDEBUGか、g++ main.cppなどオプションなししか使わない
-DEBUG_OPTION='-std=c++17 -O0 -g -Wall -fsanitize=undefined -Wno-deprecated -Wno-unneeded-internal-declaration'
-RELEASE_OPTION=''
 # コンパイルするヘッダ
 STDH=$BASEDIR/stdc++.h
+# コンパイル済みのヘッダを書き込むディレクトリ
+GCHDIR=$BASEDIR/stdc++.h.gch/
+
 # includeされるディレクトリの中で合うオプションのコンパイル済みヘッダがあれば
 # 勝手に使われるので、使いそうなやつを書いておく
 # OPTIONでc++17を入れていると以下のc++14は意味ないので注意
