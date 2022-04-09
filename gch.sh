@@ -6,6 +6,7 @@ if test "`id -u`" -ne 0; then echo PLZ sudo;  exit 1; fi
 if test "$(uname)" == 'Darwin' ; then
  echo "OSX MODE"
  BASEDIR=/usr/local/include/bits/
+ BASEDIR=/opt/homebrew/include/c++//11/aarch64-apple-darwin21/bits/
 fi
 # コンパイル済みのヘッダを書き込むディレクトリ
 GCHDIR=$BASEDIR/stdc++.h.gch/
