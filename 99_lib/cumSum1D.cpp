@@ -31,6 +31,22 @@ void cumSum1D_sample1(){
     cout << sum1D.query(3,2) << endl;
 }
 
-main(){
-    cumSum1D_sample1();
+// https://judge.yosupo.jp/problem/static_range_sum
+void static_range_sum(){
+    cin.tie(0); ios::sync_with_stdio(false);
+    int n, q; cin >> n >> q;
+    vector<long long> dat(n);
+    for(int i = 0; i < n; ++i) cin >> dat.at(i);
+    cumSum1D<long long> cum;
+    cum.load(dat);
+    while(q--){
+        int a, b;
+        cin >> a >> b;
+        cout << cum.query(a, b) << "\n";
+    }
+}
+
+int main(){
+    //cumSum1D_sample1();
+    static_range_sum();
 }

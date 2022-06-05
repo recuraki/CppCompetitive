@@ -90,7 +90,7 @@ namespace atcoder {
     private:
         int _n;
         // root node: -1 * component size
-        // otherwise: parent
+        // otherwise: parentRealnode
         std::vector<int> parent_or_size;
     };
 
@@ -100,7 +100,7 @@ namespace atcoder {
 
 using namespace atcoder;
 /*
- * クラシカル法: 最小全域木を作る。
+ * クラシカル法: 最小全域木を作る(プリムより早い)
  * makeedgeで木を作った後に
  */
 struct edge{

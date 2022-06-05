@@ -10,8 +10,8 @@
 using namespace std;
 
 /*
- * トポロジカルソートをする。  0 - nのノードを取る。
- *
+ * トポロジカルソートをする。  0 - (n-1)を取り
+ * トポロジカルソートされたvector<int>を返す
  */
 struct topologicalSort{
 public:

@@ -30,31 +30,27 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 USAGE:
  auto op = [] (int a, int b) {return min(a,b);};
  SparseTable<int> st(dat, op);
+ 区間: [a, b)を計算します
+ 結合法則, 冪等性を要求します
  */
 template<typename T>
 class SparseTable {
     vector<vector<T>> table;
     vector<int> lookup;
     function<T(T, T)> operation;
-
 public:
     SparseTable(const vector<T> &v, function<T(T, T)> ope): operation(ope) {
         int log_len = 0;
         while((1 << log_len) <= (int)v.size()) ++log_len;
         table = vector<vector<T>>(log_len, vector<int>(1 << log_len));
         lookup = vector<int>((int)v.size() + 1);
-
-        for(int i = 0; i < (int)v.size(); i++) {
-            table[0][i] = v[i];
-        }
+        for(int i = 0; i < (int)v.size(); i++) table[0][i] = v[i];
         for(int i = 1; i < log_len; i++) {
             for(int j = 0; j + (1 << i) <= (1 << log_len); j++) {
                 table[i][j] = operation(table[i-1][j], table[i - 1][j + (1 << (i - 1))]);
             }
         }
-        for(int i = 2; i < (int)lookup.size(); i++) {
-            lookup[i] = lookup[i >> 1] + 1;
-        }
+        for(int i = 2; i < (int)lookup.size(); i++) lookup[i] = lookup[i >> 1] + 1;
     }
 
     inline T query(const int l, const int r) {

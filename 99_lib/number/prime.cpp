@@ -23,46 +23,47 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 // #define dprint(arg) ;
 //////////////////////////////////////
 // 素数判定 試し割り
+
 std::random_device rnd;
-// https://tacos.hatenadiary.jp/entry/2020/06/04/001512
-long long modpow(long long a, long long n, long long mod) {
-    long long res = 1;
-    while (n > 0) {
-        if (n & 1) res = res * a % mod;
-        a = a * a % mod;
-        n >>= 1;
+
+// A ^ N を M で割ったあまり
+template<class T> T pow_mod(T A, T N, T M) {
+    T res = 1 % M;
+    A %= M;
+    while (N) {
+        if (N & 1) res = (res * A) % M;
+        A = (A * A) % M;
+        N >>= 1;
     }
     return res;
 }
-// ミラーラビン
-bool is_prime(ll n){
-    int k = 50;
-    n = abs(n);
-    if(n==2) return true;
 
-    if(n==0) return false;
-    if(n==1) return false;
-    if(n%2==0) return false;
-
-    ll d = (n - 1) >> 1;
-    while( (d&1) == 0) d>>= 1;
-
-    for(int i=0; i < k; ++i){
-        ll a = (rnd() % (n-1) )+ 1;
-        ll t = d;
-        ll y = modpow(a, t, n);
-
-        while(t!=(n-1) && y!=1LL && y!=(n-1) ){
-            y = modpow(y, 2LL, n);
-            t <<= 1;
-        }
-        if (y!=(n-1) && ( (t&1) ==0)){
-            return false;
+// Miller-Rabin 素数判定
+// http://miller-rabin.appspot.com/
+bool is_prime(long long N) {
+    if (N <= 1) return false;
+    if (N == 2) return true;
+    if (N % 2 == 0) return false;
+    vector<long long> A = {2, 325, 9375, 28178, 450775,
+                           9780504, 1795265022};
+    long long s = 0, d = N - 1;
+    while (d % 2 == 0) {
+        ++s;
+        d >>= 1;
+    }
+    for (auto a : A) {
+        if (a % N == 0) return true;
+        long long t, x = pow_mod<__int128_t>(a, d, N);
+        if (x != 1) {
+            for (t = 0; t < s; ++t) {
+                if (x == N - 1) break;
+                x = __int128_t(x) * x % N;
+            }
+            if (t == s) return false;
         }
     }
     return true;
 }
-
 
 
 
@@ -81,7 +82,7 @@ bool is_prime_damedame(long long N) {
 // SPF: ある値を割り切れる最小の数。12なら2, 素数ならその数自身
 // PrimeList[x]: xが素数なら1
 // primes 素数のリスト
-// O(logN)
+// これをしておくと高速な素因数分解が可能になる
 const long long PRIMEMAXSIZE = (100000) +1; // 10^6 開区間なのでこの場合は10^6も検査対象に入る
 vector<long long >primeList(PRIMEMAXSIZE , true);
 vector<long long >primes;

@@ -3,6 +3,7 @@ using namespace std;
 
 /*
  * 特定の点 あるいは 特定の区間 を除いた区間の累積opを求める演算
+ * 条件: 可換、単位元が存在
  * op 演算: +, *, lcm, gcd, max, minなど
  * ie 単位元
  * maxなら-INF, minならINF, +なら0, *なら1, gcdなら1, lcmなら1
@@ -11,6 +12,7 @@ using namespace std;
  * cumFromRTo(i): 右端からiの１つ手前までにopをします。 O(1)
  * cumExcludePoint(i): i以外の点をopします。 O(1)
  * cumExcludeRange(l, r): [l,r) Close,Open を除いたすべてをopします。
+ *  すなわちcumListFromL[l], cumListFromR[r - 1]です
  */
 // こんな感じのテーブルを持つ
 //    0   1   2   3   4   5
