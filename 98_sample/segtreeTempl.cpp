@@ -26,6 +26,7 @@ long long opadd(long long a, long long b) { return a + b; }
 long long eadd() { return (long long)0; }
 
 /*
+ * https://betrue12.hateblo.jp/entry/2020/09/22/194541 をみる。
  * segtree lazyについて
  * lazy_segtree<S, op, e, F, mapping, composition, id>について、
  *  S: valの形:
@@ -40,10 +41,14 @@ long long eadd() { return (long long)0; }
  *   これは、既にある子のgにfを演算するのがポイント。
  *   例えば、区間setの場合は、return f(既にgが合ってもfで上書きしていいから)
  *  F id():
- *   lazyの初期値。として捉えてよい。
- *   lazyを下にmappingで伝搬させても、valを変更しないようなF。
- *   ここは定義によって変わる。
- *    区間加算の場合、mappingは下野の値を更新するので
+ *   lazyの初期値。として捉えてよい。つまり、「存在しない数」。
+ *   lazyを下にmappingで伝搬させても、「valを変更しないよう」なF。言わば、零元。
+ *   ここは定義によって変わり、難しい。
+ *    区間maxなどの場合、-INFを淹れておけばいい。これは取られない値であり、零元である。
+ *    区間加算の場合箱となる。まず"0"という加算の零元は値として入りうるので、ID=0にはできない。
+ *      mappingは下の値を更新するので初期値は0にしたいものの、「取られない値」の条件を満たさない。
+ *      そこで、(競プロの範囲では) a_iとして取られない適当な数(INFでも-INFでもいい)を選ぶ。
+ *      そして、mapping/compositionの際にはその値かどうかで処理を分ける。
  *
  *
  *
@@ -51,12 +56,17 @@ long long eadd() { return (long long)0; }
  * get(ind, x): [ind]の値を得る
  * prod(l, r): [l, r) の区間のopを得る
  * all_prod(): prod(0, n)と同じ
+ *
  * apply(): 区間に演算を反映する
  *  1: apply(ind, func): indの値を func(a[ind])する。
  *  2: apply(l, r func): [l, r)の区間のindをfunc(a[ind])する
  *
  *  max_right:
  *  int min_left<G>():
+ *
+ *  例: https://qiita.com/recuraki/items/57b9f539511ef0876a5f#%E8%A7%A3%E6%B3%952-%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E3%83%84%E3%83%AA%E3%83%BC%E3%82%84bit%E4%B8%8A%E3%81%A7%E3%81%AE%EF%BC%92%E5%88%86%E6%8E%A2%E7%B4%A2acl%E3%81%AE%E7%B7%B4%E7%BF%92
+ *      atcoder::segtree::max_right<f>(l)を使います。ドキュメントの通り、fを満たす最大のindexの+1を返します。
+ *
  */
 long long opaddlazy(long long a, long long b) {return a+b;}
 
