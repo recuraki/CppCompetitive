@@ -96,7 +96,7 @@ public:
         // e: 零元(opしても値が変わらない)
         // a-bはaからbのnodeを"+"したもの(opではない)
         int childNum = childList.size();
-        //cout << "childnum:" << childNum << "\n";
+        //cout << "childnum:" << childNumRealnode << "\n";
         vector<S> cumListFromL = vector<S>(childNum, e());
         vector<S> cumListFromR = vector<S>(childNum, e());
         REP(i, childNum - 1){ // childNumまで回す。これが、Nまでじゃないのは、上記のように"x"の場所があるから
@@ -108,7 +108,7 @@ public:
         // 各子のRerootを行う
         REP(i, childNum){ // i番目の子ノードを処理する
             auto childNode = childList[i].first;
-            //cout << "curnode:" << curnode << " update childNum: " << childNode << "\n";
+            //cout << "curnode:" << curnode << " update childNumRealnode: " << childNode << "\n";
             //cout << "L" << cumListFromL[i].cost << "," << cumListFromL[i].nodenum << "\n";
             //cout << "R" << cumListFromR[i].cost << "," << cumListFromR[i].nodenum << "\n";
             // 子に伝搬する情報を作る。まず、渡す情報は、このノードの初期値だとする

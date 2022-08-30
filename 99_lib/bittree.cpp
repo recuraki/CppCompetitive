@@ -1,10 +1,15 @@
-# https://qiita.com/drken/items/1b7e6e459c24a83bb7fd
+// https://qiita.com/drken/items/1b7e6e459c24a83bb7fd
+/*
+ * アーベル群であることが必要です。すなわち、
+ * 結合法則, 単位元, 逆元, 交換法則
+ */
+
 template <class Abel> struct BIT {
     vector<Abel> dat;
     Abel UNITY_SUM = 0;                     // to be set
 
     /* [1, n] */
-    BIT(int n) { init(n); }
+    explicit BIT(int n) { init(n); }
     void init(int n) {
         dat.resize(n + 1);
         for (int i = 0; i < (int)dat.size(); ++i) dat[i] = UNITY_SUM;

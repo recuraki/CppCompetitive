@@ -31,6 +31,7 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 vector<int> path;
 vector<bool> visited;
 vector<vector<int>> graph;
+
 void abc204_c_DSF(int node){
     ++path.at(node);
     visited.at(node) = true;
@@ -38,6 +39,7 @@ void abc204_c_DSF(int node){
         if(!visited.at(nextnode))  abc204_c_DSF(nextnode);
     }
 }
+
 void abc204_c(){
     int n, m; cin >> n>> m;
     int a, b;

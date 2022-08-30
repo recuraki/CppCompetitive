@@ -178,11 +178,19 @@ int main(){
         auto blockI = dat.at(i);
         FOR(j, i+1, n){
             auto blockJ = dat.at(j);
-            // 例えば、true/trueでNGのとき、 false OR falseでないといけない。というような制約を列挙する。
-            // 例えば、false/trueでNGのとき、 true OR falseでないといけないと制約する
+            // 以下、trueをそのままのブロック、falseをひっくり返さないといけない、とする。
+            // また、各ルールはどれか1つではなく、0個以上マッチしうる。(今回の場合は全部ヒットすれば確実にNOになる)
+
+            // ブロックi,jがtrue/trueでNGのとき、 i=false OR j=falseでないといけない。というような制約を列挙する。
             if(!isSafe(blockI, blockJ))                     ts.add_clause(i, false, j, false);
+
+            // ブロックi,jがfalse/trueでNGのとき、 i=true OR j=falseでないといけない。というような制約を列挙する。
             if(!isSafe(rotBlock(blockI), blockJ))           ts.add_clause(i, true, j, false);
+
+            // ブロックi,jがtrue/falseでNGのとき、 i=false OR j=trueでないといけない。というような制約を列挙する。
             if(!isSafe(blockI, rotBlock(blockJ)))           ts.add_clause(i, false, j, true);
+
+            // ブロックi,jがfalse/falseでNGのとき、 i=true OR j=trueでないといけない。というような制約を列挙する。
             if(!isSafe(rotBlock(blockI), rotBlock(blockJ))) ts.add_clause(i, true, j, true);
         }
     }

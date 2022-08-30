@@ -33,21 +33,21 @@ public:
     unordered_set<T> zatsu;
     unordered_map<T, int> zatsuTable;
     unordered_map<int, T> zatsuTableReverse;
-    vector<T> zatsuAfter;
+    vector<T> zatsuList;
 
     vector<T> load(const vector<T>& dat){
-        vector<T> tmp;
+
         vector<T> res;
         // create all value uniq set
         REP(i, dat.size()) this->zatsu.template emplace(dat[i]);
 
         // create zatsu source list
-        for(T x: zatsu) tmp.emplace_back(x);
-        sort(tmp.begin(), tmp.end());
+        for(T x: zatsu) zatsuList.emplace_back(x);
+        sort(zatsuList.begin(), zatsuList.end());
 
         // Create zatsu Table
-        REP(i, tmp.size()) this->zatsuTable[tmp.at(i)] = i;
-        REP(i, tmp.size()) this->zatsuTableReverse[i] = tmp.at(i);
+        REP(i, zatsuList.size()) this->zatsuTable[zatsuList.at(i)] = i;
+        REP(i, zatsuList.size()) this->zatsuTableReverse[i] = zatsuList.at(i);
         REP(i, dat.size()) res.emplace_back(zatsuTable[dat.at(i)]);
 
         return res;
@@ -57,6 +57,13 @@ public:
         vector<T> res;
         for(T x: dat) res.template emplace_back(this->zatsuTableReverse[x]);
         return res;
+    }
+
+    int lower_bound(T val){
+        return distance(zatsuList.begin(), std::lower_bound(zatsuList.begin(), zatsuList.end(), val));
+    }
+    int upper_bound(T val){
+        return distance(zatsuList.begin(), std::upper_bound(zatsuList.begin(), zatsuList.end(), val));
     }
 
 };
@@ -96,5 +103,13 @@ int main() {
     REP(i, resReverse.size()) cout << resReverse.at(i) << " ";
     cout << "\n";
 
+    cout << "lower_bound(5)" << "\n";
+    cout << zatsu.lower_bound(5) << "\n";
+    cout << "upper_bound(5)" << "\n";
+    cout << zatsu.upper_bound(5) << "\n";
+    cout << "lower_bound(16)" << "\n";
+    cout << zatsu.lower_bound(16) << "\n";
+    cout << "upper_bound(16)" << "\n";
+    cout << zatsu.upper_bound(16) << "\n";
 
 }

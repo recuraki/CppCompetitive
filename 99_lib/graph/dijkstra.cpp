@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 #include <chrono>
 
@@ -52,10 +53,15 @@ public:
         this->nodeNum = nodeNum;
         this->lastSource = -1;
     }
-    void makeEdge(int curnode, int nextnode, T cost){
+    void makeEdge1way(int curnode, int nextnode, T cost){
         assert(nextnode < this->nodeNum); // curnode will be asserted by "at()"
         this->graph.at(curnode).emplace_back((edge){cost, nextnode});
     }
+    void makeEdge2way(int curnode, int nextnode, T cost){
+        this->graph.at(curnode).emplace_back((edge){cost, nextnode});
+        this->graph.at(nextnode).emplace_back((edge){cost, curnode});
+    }
+
     void solve(int nodeS, int nodeT){
         priority_queue<weight , vector<weight>, greater<weight>> q;
         T curCost, nextCost;
@@ -104,16 +110,17 @@ public:
 
 void test(){
     dijkstra<int> dj(4);
-    dj.makeEdge(0,1,10);
-    dj.makeEdge(0,2,4);
-    dj.makeEdge(1,2,2);
-    dj.makeEdge(2,3,1);
-    dj.makeEdge(1,3,5);
+    dj.makeEdge1way(0, 1, 10);
+    dj.makeEdge1way(0, 2, 4);
+    dj.makeEdge2way(1,2,1);
+    dj.makeEdge1way(1, 2, 2);
+    dj.makeEdge1way(2, 3, 1);
+    dj.makeEdge1way(1, 3, 5);
     dj.solve(0, 0);
     cout << "costs: ";
     REP(i, 4) cout << dj.cost.at(i) << " ";
     cout << "\n";
-    cout << "parent: ";
+    cout << "parentRealnode: ";
     REP(i, 4) cout << dj.parent.at(i) << " ";
     cout << "\n";
     auto route = dj.findRoute(0, 3);
@@ -130,7 +137,7 @@ void GRL_1_A(){
     dijkstra<int> dj(v);
     REP(i, e){
         cin >>s>>t>>d;
-        dj.makeEdge(s, t, d);
+        dj.makeEdge1way(s, t, d);
     }
     dj.solve(r, r);
     REP(i, v){
@@ -147,8 +154,8 @@ void abc211_d(){
     dijkstra<ll> dj(n);
     REP(i, m){
         cin >> a>>b; --a; --b;
-        dj.makeEdge(a, b ,1);
-        dj.makeEdge(b, a ,1);
+        dj.makeEdge1way(a, b , 1);
+        dj.makeEdge1way(b, a , 1);
     }
     dj.solve(0, 0);
     cout << dj.pathnum.at(n-1) << "\n";
@@ -162,8 +169,8 @@ void abc214_c(){
     vector<ll> dats(n), datt(n);
     REP(i, n) cin >> dats.at(i);
     REP(i, n) cin >> datt.at(i);
-    REP(i, n) dj.makeEdge(i%n, (i+1)%n, dats.at(i));
-    REP(i, n) dj.makeEdge(n, i, datt.at(i));
+    REP(i, n) dj.makeEdge1way(i % n, (i + 1) % n, dats.at(i));
+    REP(i, n) dj.makeEdge1way(n, i, datt.at(i));
     dj.solve(n,n);
     REP(i, n) cout << dj.cost.at(i) << "\n";
 }
@@ -171,60 +178,59 @@ void abc214_c(){
 // https://atcoder.jp/contests/typical90/tasks/typical90_aq
 // 01BFSでない解法
 void tenkei43(){
-    void solve(){
-        int h, w; cin >> h >> w;
-        int r1,c1,r2,c2; cin >> r1>>c1>>r2>>c2;
-        --r1; --r2; --c1; --c2;
-        char maze[h*w];
-        memset(maze, 0, sizeof(maze));
-        REP(hh, h) REP(ww, w) cin >> maze[hh*w + ww];
-        int masu = h*w; // この迷路のマス数
-        dijkstra<int> dj(4*masu + 2);
-        // 各向き間の辺を張る
-        REP(ind, masu) {
-            FOR(i, 0, 4) {
-                FOR(j, i + 1, 4) {
-                    dj.makeEdge(masu*i + ind, masu*j + ind, 1);
-                    dj.makeEdge(masu*j + ind, masu*i + ind, 1);
-                }
+    int h, w; cin >> h >> w;
+    int r1,c1,r2,c2; cin >> r1>>c1>>r2>>c2;
+    --r1; --r2; --c1; --c2;
+    char maze[h*w];
+    memset(maze, 0, sizeof(maze));
+    REP(hh, h) REP(ww, w) cin >> maze[hh*w + ww];
+    int masu = h*w; // この迷路のマス数
+    dijkstra<int> dj(4*masu + 2);
+    // 各向き間の辺を張る
+    REP(ind, masu) {
+        FOR(i, 0, 4) {
+            FOR(j, i + 1, 4) {
+                dj.makeEdge1way(masu * i + ind, masu * j + ind, 1);
+                dj.makeEdge1way(masu * j + ind, masu * i + ind, 1);
             }
         }
-        int s, t;
-        s = masu*4; // start node
-        t = masu*4 + 1; // goal node
-        // s -> startnodeにcost0で辺を貼る
-        FOR(i, 0, 4) dj.makeEdge(s, masu * i + (w * r1) + c1, 0);
-        // goalnode -> tにcost0で辺を張る
-        FOR(i, 0, 4) dj.makeEdge(masu * i + (w * r2) + c2, t, 0);
-        int nh, nw;
-        // 0:up, 1: right, 2:down, 3:left の レイヤだとする
-        REP(hh, h){
-            REP(ww, w){
-                // 上にマスがあり && 上が"."なら、 cost0で辺を張る
-                nh = hh - 1; nw = ww;
-                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*0 + w * hh + ww, masu*0 + w * nh + nw, 0);
-                nh = hh; nw = ww + 1;
-                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*1 + w * hh + ww, masu*1 + w * nh + nw, 0);
-                nh = hh + 1; nw = ww;
-                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*2 + w * hh + ww, masu*2 + w * nh + nw, 0);
-                nh = hh; nw = ww - 1;
-                if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge(masu*3 + w * hh + ww, masu*3 + w * nh + nw, 0);
-            }
-        }
-        // s->tでダイクストラする
-        dj.solve(s, t);
-        // 制約上、この問題ではunreachはないが一応。
-        if(dj.cost[t] == dj.INF) cout << -1 << "\n";
-        else cout << dj.cost[t] << "\n";
     }
+    int s, t;
+    s = masu*4; // start node
+    t = masu*4 + 1; // goal node
+    // s -> startnodeにcost0で辺を貼る
+    FOR(i, 0, 4) dj.makeEdge1way(s, masu * i + (w * r1) + c1, 0);
+    // goalnode -> tにcost0で辺を張る
+    FOR(i, 0, 4) dj.makeEdge1way(masu * i + (w * r2) + c2, t, 0);
+    int nh, nw;
+    // 0:up, 1: right, 2:down, 3:left の レイヤだとする
+    REP(hh, h){
+        REP(ww, w){
+            // 上にマスがあり && 上が"."なら、 cost0で辺を張る
+            nh = hh - 1; nw = ww;
+            if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge1way(masu * 0 + w * hh + ww, masu * 0 + w * nh + nw, 0);
+            nh = hh; nw = ww + 1;
+            if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge1way(masu * 1 + w * hh + ww, masu * 1 + w * nh + nw, 0);
+            nh = hh + 1; nw = ww;
+            if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge1way(masu * 2 + w * hh + ww, masu * 2 + w * nh + nw, 0);
+            nh = hh; nw = ww - 1;
+            if(0 <= nh && nh < h && 0 <= nw && nw < w && maze[w*nh+nw] == '.') dj.makeEdge1way(masu * 3 + w * hh + ww, masu * 3 + w * nh + nw, 0);
+        }
+    }
+    // s->tでダイクストラする
+    dj.solve(s, t);
+    // 制約上、この問題ではunreachはないが一応。
+    if(dj.cost[t] == dj.INF) cout << -1 << "\n";
+    else cout << dj.cost[t] << "\n";
+
 }
 
 using namespace std;
 int main() {
     FASTIOpre();
-    //test();
+    test();
     //GRL_1_A();
     //abc211_d();
     //abc214_c();
-    tenkei43();
+    //tenkei43();
 }

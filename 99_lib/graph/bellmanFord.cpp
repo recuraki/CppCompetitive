@@ -26,7 +26,9 @@ template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } retu
 
 
 /*
- * ダイクストラでコストを求める。
+ * ベルマンフォードでコストを求める。
+ * O(VE)
+ * 戻り値はtrueの時解ける、falseの時NG（負の閉路がある）
  * 未到達はINF
  * parentは s および 未到達が -1
  * findRouteはその前に実行したsolveの結果をもとに経路を返す
