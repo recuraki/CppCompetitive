@@ -1,8 +1,3 @@
-//
-// Created by kanai on 2022/02/06.
-// https://leetcode.com/problems/lru-cache/
-
-
 class LRUCache {
 public:
     // Front = new, Back = old
@@ -41,10 +36,3 @@ public:
         }
     }
 };
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */

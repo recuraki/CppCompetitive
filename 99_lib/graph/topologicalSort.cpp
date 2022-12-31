@@ -10,8 +10,14 @@
 using namespace std;
 
 /*
- * トポロジカルソートをする。  0 - (n-1)を取り
- * トポロジカルソートされたvector<int>を返す
+ * 有向辺グラフについてトポロジカルソートをする。  0 - n-1のノードを取る。
+ * 時間計算量: O(E+V)
+ * topologicalSort(n): nノード(0 to n-1)を作る
+ * makeEdge(u, v): u->vに辺をはる。
+ * solve(): トポロジカルソートをする。
+ * 結果はvector<int> ansに格納される。
+ *
+ * 前からみれば根から辿れる。後ろからみれば、葉から辿れる.
  */
 struct topologicalSort{
 public:

@@ -16,11 +16,12 @@ if test "$(uname)" == 'Darwin' ; then
 fi
 
 
-mkdir -p $GCHDIR
 # コンパイルするヘッダ
 STDH=$BASEDIR/stdc++.h
 # コンパイル済みのヘッダを書き込むディレクトリ
 GCHDIR=$BASEDIR/stdc++.h.gch/
+
+mkdir -p $GCHDIR
 
 # includeされるディレクトリの中で合うオプションのコンパイル済みヘッダがあれば
 # 勝手に使われるので、使いそうなやつを書いておく

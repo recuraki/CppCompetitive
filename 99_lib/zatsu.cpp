@@ -23,6 +23,11 @@ template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } retu
 template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 #define ceil(a,b) (((a) + ((b) - 1)) / (b))
 
+/*
+ * 座標圧縮を行う。
+ * zatsu<T>の宣言に対して、load(vector<T>)を呼ぶと、
+ * return: vector<T> 座標圧縮された後のvector<T>
+ */
 template<typename T> class zatsuClass{
 public:
     unordered_set<T> zatsu;

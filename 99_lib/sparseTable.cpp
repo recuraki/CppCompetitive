@@ -30,6 +30,7 @@ template <typename T> void dprint(const vector<vector<T>>& arg) { for_each(begin
 USAGE:
  auto op = [] (int a, int b) {return min(a,b);};
  SparseTable<int> st(dat, op);
+ query(a,b) => [a, b) Close-Open
  区間: [a, b)を計算します
  結合法則, 冪等性を要求します
  */
@@ -64,8 +65,12 @@ int main(){
     auto op = [] (int a, int b) {return min(a,b);};
     vector<int> dat = {5, 4, 3, 2, 1};
     SparseTable<int> st(dat, op);
-    cout << st.query(0, 3); // -> 3
+    cout << st.query(0, 3); // -> 3 min(5, 4, 3)
 
+    vector<int> dat2 = {2, 4, 8, 3, 5};
+    SparseTable<int> stGcd(dat2, [](int a, int b){ return gcd(a, b); } );
+    cout << stGcd.query(0, 3); // -> 2 (2, 4, 8)
+    cout << stGcd.query(1, 3); // -> 4 (4, 8)
 
     return 0;
 }
