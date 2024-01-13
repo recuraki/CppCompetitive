@@ -106,7 +106,20 @@ template <int mod> struct ModInt
 constexpr ll MOD = 998244353;
 using mint = ModInt<MOD>;
 
-
+// https://qiita.com/drken/items/a14e9af0ca2d857dad23#%E5%95%8F%E9%A1%8C-2-%E7%B4%84%E6%95%B0%E5%88%97%E6%8C%99
+vector<long long> enum_divisors(long long N) {
+    vector<long long> res;
+    for (long long i = 1; i * i <= N; ++i) {
+        if (N % i == 0) {
+            res.push_back(i);
+            // 重複しないならば i の相方である N/i も push
+            if (N/i != i) res.push_back(N/i);
+        }
+    }
+    // 小さい順に並び替える
+    sort(res.begin(), res.end());
+    return res;
+}
 
 // sigma i : 1 to n
 ll sigma1(ll n){
